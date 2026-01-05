@@ -1,0 +1,24 @@
+@model IEnumerable<TaskManagement.Models.Users>
+
+<div class="container mt-2">
+    <h2 class="mb-2 text-white">Users</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var user in Model)
+                {
+                    <tr>
+                        <td class="text-white">@user.Name</td>
+                        <td class="text-white">@user.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@model IEnumerable<TaskManagement.Models.TaskItem>
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-white">My Assigned Tasks</h2>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Assign Date</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Task Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var task in Model)
+                {
+                    <tr>
+                        <td class="text-white fw-bold">@task.Title</td>
+                        <td class="text-white">@task.Description</td>
+                        <td class="text-white">@task.AssignDate.ToShortDateString()</td>
+                        <td class="text-white fw-bold @(task.DueDate < DateTime.Now ? "text-danger" : "")">@task.DueDate.ToShortDateString()</td>
+                        <td>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar 
+                                    @(task.Priority == "High" ? "bg-danger" : 
+                                      task.Priority == "Medium" ? "bg-warning text-dark" : "bg-success")" 
+                                    role="progressbar" 
+                                    style="width: @(task.Priority == "High" ? "100%" : task.Priority == "Medium" ? "60%" : "30%")">
+                                    @task.Priority
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar 
+                                    @(task.Status == "Completed" ? "bg-success" : 
+                                      task.Status == "In Progress" ? "bg-info text-dark" : 
+                                      task.Status == "Pending" ? "bg-warning text-dark" : "bg-secondary")" 
+                                    role="progressbar" 
+                                    style="width: @(task.Status == "Completed" ? "100%" : task.Status == "In Progress" ? "65%" : task.Status == "Pending" ? "35%" : "0%")">
+                                    @task.Status
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-controller="UserDashboard" asp-action="Index" asp-route-section="details" asp-route-taskId="@task.Id" 
+                               class="btn btn-info btn-sm">View Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

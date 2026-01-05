@@ -1,0 +1,82 @@
+@model IEnumerable<TaskManagement.Models.TaskItem>
+
+<div class="container mt-4">
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label for="assignee" class="form-label fw-bold text-white">Assignee:</label>
+            <input type="text" name="assignee" id="assignee" placeholder="Enter assignee" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="status" class="form-label fw-bold text-white">Status:</label>
+            <input type="text" name="status" id="status" placeholder="Enter status" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label for="dueDate" class="form-label fw-bold text-white">Due Date:</label>
+            <input type="date" name="dueDate" id="dueDate" class="form-control" />
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">Filter</button>
+            <a href="/Task/Index" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Task Description</th>
+                <th>Assign Date</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Task Status</th>
+                <th>Assigned To</th>
+                <th>Remarks</th> 
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var task in Model)
+        {
+        <tr>
+            <td class="text-white">@task.Title</td>
+            <td class="text-white">@task.Description</td>
+            <td class="text-white">@task.AssignDate.ToShortDateString()</td>  
+            <td class="text-white">@task.DueDate.ToShortDateString()</td>   
+            <td>
+                <div class="progress" style="height: 25px;">
+                <div class="progress-bar 
+                    @(task.Priority == "High" ? "bg-danger" : 
+                    task.Priority == "Medium" ? "bg-warning text-dark" : "bg-success")" 
+                    role="progressbar" 
+                    style="width: @(task.Priority == "High" ? "100%" : task.Priority == "Medium" ? "60%" : "30%")">
+                    @task.Priority
+                </div>
+                </div>
+            </td>
+            <td>
+                <div class="progress" style="height: 25px;">
+                <div class="progress-bar 
+                    @(task.Status == "Completed" ? "bg-success" : 
+                    task.Status == "In Progress" ? "bg-info text-dark" : 
+                    task.Status == "Pending" ? "bg-warning text-dark" : "bg-secondary")" 
+                    role="progressbar" 
+                    style="width: @(task.Status == "Completed" ? "100%" : task.Status == "In Progress" ? "65%" : task.Status == "Pending" ? "35%" : "0%")">
+                    @task.Status
+                </div>
+                </div>
+            </td>
+            <td class="text-white">@task.AssignedUser?.Name</td>
+            <td class="text-white">@task.Remarks</td>
+            <td>
+                <a asp-controller="Dashboard" asp-action="Index" asp-route-section="edit" asp-route-taskId="@task.Id"
+                    class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                <a href="/Dashboard/Delete/@task.Id" class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i></a>
+            </td>
+            
+        </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+</div>

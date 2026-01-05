@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row ">
+    <div class="col-md-4 m-auto" id="home_page">
+    <h3 style="text-align: center;">Choose Login Role?</h3><br>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-success" style="margin-right:20px;"> User Register</a>
+        <a href="@Url.Action("Login", "Account")" class="btn btn-warning" style="margin-right:20px;"> User Login</a>
+        <a href="@Url.Action(action:"AdminLogin", controller:"Account")" class="btn btn-primary"> Admin Login</a> 
+    </div>
+</div>

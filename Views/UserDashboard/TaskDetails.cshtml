@@ -1,0 +1,79 @@
+@model TaskManagement.Models.TaskItem
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4" style="background: linear-gradient(135deg, #081731, #0044cc);">
+                <div class="card-body p-5">
+                    <div class="mb-2 text-center">
+                        <h2 class="text-white mb-2">@Model.Title</h2>
+                        <p class="text-white-50 fs-5">@Model.Description</p>
+                    </div>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-white">Assign Date :</label>
+                            <p class="card-text text-white fs-5">@Model.AssignDate.ToShortDateString()</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-white">Due Date :</label>
+                            <p class="card-text text-white fs-5 fw-bold @(Model.DueDate < DateTime.Now ? "text-danger" : "")">
+                                @Model.DueDate.ToShortDateString()
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-white">Priority :</label>
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar 
+                                    @(Model.Priority == "High" ? "bg-danger" : 
+                                      Model.Priority == "Medium" ? "bg-warning text-dark" : "bg-success")" 
+                                    role="progressbar" 
+                                    style="width: @(Model.Priority == "High" ? "100%" : Model.Priority == "Medium" ? "60%" : "30%")">
+                                    @Model.Priority
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-white">Status :</label>
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar 
+                                    @(Model.Status == "Completed" ? "bg-success" : 
+                                      Model.Status == "In Progress" ? "bg-info text-dark" : 
+                                      Model.Status == "Pending" ? "bg-warning text-dark" : "bg-secondary")" 
+                                    role="progressbar" 
+                                    style="width: @(Model.Status == "Completed" ? "100%" : Model.Status == "In Progress" ? "60%" : Model.Status == "Pending" ? "30%" : "0%")">
+                                    @Model.Status
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="text-white mb-2" />
+
+                    <h5 class="text-white mb-4">Update Task Status</h5>
+                    <form asp-controller="UserDashboard" asp-action="UpdateStatus" method="post" class="row g-4">
+                        <input type="hidden" name="taskId" value="@Model.Id" />
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-white">Status :</label>
+                            <select name="status" class="form-select ">
+                                <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option>
+                                <option value="In Progress" selected="@(Model.Status == "In Progress")">In Progress</option>
+                                <option value="Completed" selected="@(Model.Status == "Completed")">Completed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold text-white">Remarks :</label>
+                            <textarea name="remarks" class="form-control form-control-md" rows="3" >@Model.Remarks</textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn btn-success btn-md px-3 py-2">Update Status</button>
+                                <a asp-controller="UserDashboard" asp-action="Index" asp-route-section="tasks" class="btn btn-outline-light btn-md px-3 py-2">Back to Tasks</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
